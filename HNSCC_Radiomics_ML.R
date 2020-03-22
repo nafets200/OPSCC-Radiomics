@@ -143,3 +143,37 @@ probtest_test <- predict(naiveB,
 
 
 ###########################################################################################
+
+
+
+# ***************** Support Vector Machine - SVM - with radial kernel*********************
+
+ML_identifier <- "SVM"
+
+SVM <- svm(x = as.matrix(SelectTrainD[,3:ncol(SelectTrainD)]), 
+           y = as.factor(SelectTrainD$HPV_status), 
+           scale = FALSE, 
+           type = "C-classification", 
+           kernel = "radial",
+           gamma = gamma,
+           cost = cost , 
+           class.weights = c("0" = 1-sum((as.factor(SelectTrainD$HPV_status)==0))/length(as.factor(SelectTrainD$HPV_status)), "1" = sum((as.factor(SelectTrainD$HPV_status)==0))/length(as.factor(SelectTrainD$HPV_status))),
+           probability = TRUE,
+           na.action = na.fail 
+)
+
+probtest_train <- predict(object = SVM, 
+                          newdata = as.matrix(SelectTrainD[,3:ncol(SelectTrainD)]), 
+                          decision.values = FALSE,
+                          probability = TRUE,  
+                          na.action = na.fail)
+
+
+probtest_test <- predict(object = SVM, 
+                         newdata = as.matrix(SelectTestD[,3:ncol(SelectTestD)]), 
+                         decision.values = FALSE,
+                         probability = TRUE,  
+                         na.action = na.fail)
+
+###########################################################################################
+
